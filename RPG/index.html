@@ -1,12 +1,11 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nusantara Odyssey: Stickman Space RPG</title>
     <!-- Google Fonts untuk nuansa futuristik dan etnik -->
-    <link href="[https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap](https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap)" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --space-bg: #03030c;
@@ -38,7 +37,7 @@
             position: relative;
         }
 
-        /* Latar Belakang Bintang Neon - Diisolasi agar tidak menghalangi klik */
+        /* Latar Belakang Bintang Neon - Tidak Menghalangi Klik */
         .stars-container {
             position: absolute;
             top: 0;
@@ -58,72 +57,54 @@
         }
 
         @keyframes pulse-star {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
+            0%, 100% { opacity: 0.15; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.2); }
         }
 
-        /* Motif Suku Dayak/Toraja Neon Futuristik di Sudut Layar */
-        .tribal-corner {
+        /* Dekorasi Ukiran Suku Nusantara (SVG) Kiri Atas */
+        .tribal-svg-top {
             position: absolute;
-            width: 180px;
-            height: 180px;
-            opacity: 0.25;
+            top: 10px;
+            left: 10px;
+            width: clamp(80px, 20vw, 150px);
+            height: auto;
+            opacity: 0.3;
             z-index: 2;
-            pointer-events: none; /* MEMASTIKAN TIDAK MENGHALANGI KLIK */
+            pointer-events: none; /* Kunci utama agar tombol tidak terhalang */
             filter: drop-shadow(0 0 8px var(--neon-blue));
         }
 
-        .top-left {
-            top: 15px;
-            left: 15px;
-            border-top: 3px solid var(--neon-blue);
-            border-left: 3px solid var(--neon-blue);
-            border-top-left-radius: 16px;
-        }
-
-        .bottom-right {
-            bottom: 15px;
-            right: 15px;
-            border-bottom: 3px solid var(--neon-magenta);
-            border-right: 3px solid var(--neon-magenta);
-            border-bottom-right-radius: 16px;
-        }
-
-        /* Pola Ornamen Dekoratif di dalam Pojok */
-        .tribal-pattern {
-            width: 100%;
-            height: 100%;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            pointer-events: none;
-        }
-
-        .pattern-line {
-            height: 2px;
-            background: linear-gradient(90deg, var(--neon-blue), transparent);
-            margin: 3px 0;
-            pointer-events: none;
+        /* Dekorasi Ukiran Suku Nusantara (SVG) Kanan Bawah */
+        .tribal-svg-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: clamp(80px, 20vw, 150px);
+            height: auto;
+            opacity: 0.3;
+            z-index: 2;
+            pointer-events: none; /* Kunci utama agar tombol tidak terhalang */
+            filter: drop-shadow(0 0 8px var(--neon-magenta));
+            transform: rotate(180deg);
         }
 
         /* Kontainer Utama Menu */
         .menu-container {
             position: relative;
-            z-index: 10; /* Berada di atas semua elemen latar belakang */
-            pointer-events: auto; /* Memastikan semua tombol di dalam bisa diklik */
+            z-index: 10; 
+            pointer-events: auto; /* Memastikan semua interaksi tombol aktif */
             text-align: center;
-            max-width: 480px;
-            width: 90%;
-            padding: 30px 20px;
-            background: rgba(10, 10, 25, 0.75);
-            border: 1px solid rgba(0, 240, 255, 0.25);
+            max-width: 420px;
+            width: 88%;
+            padding: clamp(20px, 6vh, 40px) 20px;
+            background: rgba(8, 8, 20, 0.85);
+            border: 1px solid rgba(0, 240, 255, 0.2);
             border-radius: 24px;
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9),
-                        0 0 30px rgba(0, 240, 255, 0.15);
-            animation: fade-in 1.2s ease-out;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
+                        0 0 30px rgba(0, 240, 255, 0.1);
+            animation: fade-in 1s ease-out;
         }
 
         @keyframes fade-in {
@@ -131,29 +112,28 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Judul Game Etnik & Sci-Fi */
+        /* Judul Game */
         .title-sub {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.95rem;
-            letter-spacing: 0.35rem;
+            font-size: clamp(0.8rem, 3vw, 0.95rem);
+            letter-spacing: 0.25rem;
             color: var(--neon-gold);
-            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+            text-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
             text-transform: uppercase;
             margin-bottom: 8px;
         }
 
         .title-main {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem; /* Diperkecil agar pas dan tidak terpotong di HP */
+            font-size: clamp(1.8rem, 7vw, 2.4rem); /* Responsif otomatis sesuai lebar HP */
             font-weight: 900;
             line-height: 1.2;
-            background: linear-gradient(135deg, #ffffff 30%, var(--neon-blue) 70%, var(--neon-magenta) 100%);
+            background: linear-gradient(135deg, #ffffff 40%, var(--neon-blue) 80%, var(--neon-magenta) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+            text-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
             margin-bottom: 20px;
             letter-spacing: 1px;
-            word-wrap: break-word;
         }
 
         /* Ilustrasi Karakter Stickman */
@@ -161,95 +141,77 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 140px;
-            margin-bottom: 25px;
-            position: relative;
-            pointer-events: none; /* Agar tidak menghalangi sentuhan */
+            height: clamp(100px, 15vh, 130px);
+            margin-bottom: 20px;
+            pointer-events: none;
         }
 
         .stickman-svg {
-            width: 120px;
-            height: 120px;
-            filter: drop-shadow(0 0 10px var(--neon-blue));
+            width: auto;
+            height: 100%;
+            filter: drop-shadow(0 0 8px var(--neon-blue));
             animation: hover-animation 4s infinite ease-in-out;
         }
 
         @keyframes hover-animation {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(1deg); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
         /* Tombol Menu */
         .button-group {
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            max-width: 290px;
+            gap: 12px;
+            max-width: 280px;
             margin: 0 auto;
-            position: relative;
-            z-index: 15;
         }
 
         .btn {
             background: transparent;
             border: 2px solid var(--neon-blue);
             color: var(--text-light);
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             border-radius: 12px;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             outline: none;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
-            -webkit-tap-highlight-color: transparent; /* Menghapus highlight abu-abu di Android/iOS */
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.25), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary {
             background: rgba(0, 240, 255, 0.08);
             border-color: var(--neon-blue);
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
         }
 
         .btn-primary:active, .btn-primary:hover {
             background: var(--neon-blue);
             color: var(--space-bg);
-            box-shadow: 0 0 20px var(--neon-blue);
+            box-shadow: 0 0 18px var(--neon-blue);
+            transform: scale(1.02);
         }
 
         .btn-secondary {
-            border-color: rgba(240, 244, 248, 0.25);
-            color: rgba(240, 244, 248, 0.75);
+            border-color: rgba(240, 244, 248, 0.2);
+            color: rgba(240, 244, 248, 0.7);
         }
 
         .btn-secondary:active, .btn-secondary:hover {
             border-color: var(--neon-magenta);
             color: #fff;
             background: rgba(255, 0, 127, 0.08);
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.25);
+            transform: scale(1.02);
         }
 
         /* Overlay Pop-up Pengaturan */
@@ -272,51 +234,50 @@
             background: #090918;
             border: 2px solid var(--neon-magenta);
             border-radius: 20px;
-            padding: 25px;
-            max-width: 360px;
+            padding: 24px;
+            max-width: 340px;
             width: 85%;
             text-align: center;
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.3);
-            animation: scale-up 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.3);
+            animation: scale-up 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.15);
         }
 
         @keyframes scale-up {
-            from { transform: scale(0.85); opacity: 0; }
+            from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
         .modal-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--neon-magenta);
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .setting-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
-            padding: 8px 0;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .setting-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: rgba(240, 244, 248, 0.8);
         }
 
         .toggle-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: all 0.2s;
             -webkit-tap-highlight-color: transparent;
         }
@@ -324,11 +285,11 @@
         .toggle-btn.active {
             background: var(--neon-magenta);
             border-color: var(--neon-magenta);
-            box-shadow: 0 0 10px var(--neon-magenta);
+            box-shadow: 0 0 8px var(--neon-magenta);
         }
 
         .btn-close {
-            margin-top: 15px;
+            margin-top: 10px;
             width: 100%;
         }
 
@@ -340,14 +301,14 @@
             transform: translateX(-50%);
             background: rgba(0, 240, 255, 0.95);
             color: var(--space-bg);
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 8px;
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-family: 'Share Tech Mono', monospace;
-            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
             z-index: 1000;
-            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
             pointer-events: none;
             width: max-content;
             max-width: 90%;
@@ -359,33 +320,10 @@
         }
 
         .audio-disclaimer {
-            font-size: 0.7rem;
-            color: rgba(240, 244, 248, 0.35);
-            margin-top: 15px;
+            font-size: 0.65rem;
+            color: rgba(240, 244, 248, 0.3);
+            margin-top: 12px;
             font-style: italic;
-            line-height: 1.3;
-        }
-
-        /* RESPONSIVITAS LAYAR SANGAT KECIL */
-        @media (max-width: 360px) {
-            .title-main {
-                font-size: 1.8rem;
-            }
-            .menu-container {
-                padding: 20px 15px;
-            }
-            .stickman-container {
-                height: 110px;
-                margin-bottom: 15px;
-            }
-            .stickman-svg {
-                width: 95px;
-                height: 95px;
-            }
-            .btn {
-                padding: 10px 20px;
-                font-size: 0.85rem;
-            }
         }
     </style>
 </head>
@@ -394,25 +332,19 @@
     <!-- Latar Belakang Bintang Neon -->
     <div class="stars-container" id="starsContainer"></div>
 
-    <!-- Ornamen Motif Suku Neon (Kiri Atas) -->
-    <div class="tribal-corner top-left">
-        <div class="tribal-pattern">
-            <div class="pattern-line" style="width: 100%;"></div>
-            <div class="pattern-line" style="width: 80%;"></div>
-            <div class="pattern-line" style="width: 60%;"></div>
-            <div style="font-family:'Share Tech Mono'; font-size: 9px; color: var(--neon-blue); letter-spacing: 1.5px; margin-left: 3px;">SYS_ON // N_ODYSSEY</div>
-        </div>
-    </div>
+    <!-- Dekorasi Ukiran Tradisional Dayak Kiri Atas (SVG Ringan) -->
+    <svg class="tribal-svg-top" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 5 H95 M5 5 V95 M5 20 H50 M20 5 V50 M5 35 Q35 35 35 5" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M5 50 Q50 50 50 5" stroke="#00f0ff" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3,3"/>
+        <circle cx="20" cy="20" r="3" fill="#ff007f"/>
+    </svg>
 
-    <!-- Ornamen Motif Suku Neon (Kanan Bawah) -->
-    <div class="tribal-corner bottom-right">
-        <div class="tribal-pattern" style="justify-content: flex-end; text-align: right;">
-            <div style="font-family:'Share Tech Mono'; font-size: 9px; color: var(--neon-magenta); letter-spacing: 1.5px; margin-right: 3px; margin-bottom: 6px;">SEKTOR_X_IDN</div>
-            <div class="pattern-line" style="width: 60%; margin-left: auto; background: linear-gradient(-90deg, var(--neon-magenta), transparent);"></div>
-            <div class="pattern-line" style="width: 80%; margin-left: auto; background: linear-gradient(-90deg, var(--neon-magenta), transparent);"></div>
-            <div class="pattern-line" style="width: 100%; margin-left: auto; background: linear-gradient(-90deg, var(--neon-magenta), transparent);"></div>
-        </div>
-    </div>
+    <!-- Dekorasi Ukiran Tradisional Dayak Kanan Bawah (SVG Ringan) -->
+    <svg class="tribal-svg-bottom" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 5 H95 M5 5 V95 M5 20 H50 M20 5 V50 M5 35 Q35 35 35 5" stroke="#ff007f" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M5 50 Q50 50 50 5" stroke="#ff007f" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3,3"/>
+        <circle cx="20" cy="20" r="3" fill="#00f0ff"/>
+    </svg>
 
     <!-- Kontainer Menu Utama -->
     <div class="menu-container">
@@ -421,38 +353,38 @@
 
         <!-- Ilustrasi Animasi Stickman Luar Angkasa dengan Senjata Keris Plasma -->
         <div class="stickman-container">
-            <svg class="stickman-svg" viewBox="0 0 100 100" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)">
-                <!-- Helm/Visor Luar Angkasa -->
+            <svg class="stickman-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Helm Space Suit -->
                 <circle cx="50" cy="25" r="8" stroke="#00f0ff" stroke-width="2.5" fill="none" />
                 <path d="M46 25 Q50 21 54 25" stroke="#ff007f" stroke-width="2" fill="none" />
                 
-                <!-- Badan / Torso -->
-                <line x1="50" y1="33" x2="50" y2="60" stroke="#ffffff" stroke-width="3" />
+                <!-- Badan -->
+                <line x1="50" y1="33" x2="50" y2="60" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
                 
                 <!-- Tangan Kiri -->
-                <line x1="50" y1="40" x2="35" y2="48" stroke="#ffffff" stroke-width="2.5" />
-                <line x1="35" y1="48" x2="25" y2="42" stroke="#ffffff" stroke-width="2.5" />
+                <line x1="50" y1="40" x2="35" y2="48" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="35" y1="48" x2="25" y2="42" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
                 
-                <!-- Tangan Kanan (Memegang Pusaka Keris Plasma) -->
-                <line x1="50" y1="40" x2="68" y2="48" stroke="#ffffff" stroke-width="2.5" />
+                <!-- Tangan Kanan (Memegang Keris Plasma) -->
+                <line x1="50" y1="40" x2="68" y2="48" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
                 <!-- Keris Plasma -->
-                <line x1="68" y1="48" x2="72" y2="44" stroke="#ffaa00" stroke-width="3" />
-                <path d="M72 44 Q76 38 73 34 T80 25 T77 15" fill="none" stroke="#ff007f" stroke-width="3" stroke-linecap="round" filter="drop-shadow(0 0 5px #ff007f)" />
+                <line x1="68" y1="48" x2="72" y2="44" stroke="#ffaa00" stroke-width="3" stroke-linecap="round" />
+                <path d="M72 44 Q76 38 73 34 T80 25 T77 15" fill="none" stroke="#ff007f" stroke-width="2.5" stroke-linecap="round" filter="drop-shadow(0 0 5px #ff007f)" />
 
                 <!-- Kaki Kiri -->
-                <line x1="50" y1="60" x2="40" y2="78" stroke="#ffffff" stroke-width="2.5" />
-                <line x1="40" y1="78" x2="33" y2="85" stroke="#ffffff" stroke-width="2.5" />
+                <line x1="50" y1="60" x2="40" y2="78" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="40" y1="78" x2="33" y2="85" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
                 
                 <!-- Kaki Kanan -->
-                <line x1="50" y1="60" x2="60" y2="78" stroke="#ffffff" stroke-width="2.5" />
-                <line x1="60" y1="78" x2="68" y2="85" stroke="#ffffff" stroke-width="2.5" />
+                <line x1="50" y1="60" x2="60" y2="78" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="60" y1="78" x2="68" y2="85" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
 
-                <!-- Efek Aura Etnik Halus -->
-                <circle cx="50" cy="50" r="35" stroke="rgba(0, 240, 255, 0.1)" stroke-width="1" stroke-dasharray="5,5" fill="none"/>
+                <!-- Efek Ring Magnetik -->
+                <circle cx="50" cy="50" r="35" stroke="rgba(0, 240, 255, 0.15)" stroke-width="1" stroke-dasharray="4,4" fill="none"/>
             </svg>
         </div>
 
-        <!-- Kelompok Tombol Menu Utama -->
+        <!-- Kelompok Tombol Utama -->
         <div class="button-group">
             <button class="btn btn-primary" id="btnStart">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -470,7 +402,7 @@
     <!-- Pop-up Modal Pengaturan -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
-            <h2 class="modal-title">Konfigurasi Kokpit</h2>
+            <h2 class="modal-title">Sistem Kokpit</h2>
             
             <div class="setting-row">
                 <span class="setting-label">Audio & Musik Plasma</span>
@@ -478,13 +410,13 @@
             </div>
             
             <div class="setting-row">
-                <span class="setting-label">Partikel Bintang Neon</span>
+                <span class="setting-label">Partikel Bintang</span>
                 <button class="toggle-btn active" id="toggleStars">AKTIF</button>
             </div>
 
             <div class="setting-row">
-                <span class="setting-label">Reset Data Karakter</span>
-                <button class="toggle-btn" id="btnResetData" style="background: rgba(255, 0, 0, 0.2); border-color: red; color: red;">RESET</button>
+                <span class="setting-label">Format Ulang Karakter</span>
+                <button class="toggle-btn" id="btnResetData" style="background: rgba(255, 0, 0, 0.2); border-color: red; color: #ff3333;">RESET</button>
             </div>
 
             <button class="btn btn-primary btn-close" id="btnCloseSettings">SIMPAN & KEMBALI</button>
@@ -492,12 +424,12 @@
     </div>
 
     <!-- Toast Notifikasi -->
-    <div class="toast" id="toastNotification">Sistem diinisialisasi! Data perjalanan aman.</div>
+    <div class="toast" id="toastNotification">Sistem Siap! Data perjalanan aman.</div>
 
     <script>
-        // --- 1. GENERASI BINTANG LATAR BELAKANG ---
+        // --- 1. SENSOR BINTANG SENSORIS ---
         const starsContainer = document.getElementById('starsContainer');
-        const numStars = 60; // Dikurangi sedikit agar lebih lancar di mobile
+        const numStars = 60;
 
         function createStars() {
             starsContainer.innerHTML = '';
@@ -505,10 +437,9 @@
                 const star = document.createElement('div');
                 star.classList.add('star');
                 
-                const size = Math.random() * 2.5 + 1;
+                const size = Math.random() * 2 + 1;
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
-                
                 star.style.left = `${Math.random() * 100}vw`;
                 star.style.top = `${Math.random() * 100}vh`;
                 
@@ -522,477 +453,124 @@
             }
         }
         createStars();
-
         window.addEventListener('resize', createStars);
 
-        // --- 2. LOGIKA INISIALISASI (LocalStorage) ---
+        // --- 2. SISTEM DATABASE KORIDOR ---
         const DEFAULT_STATS = {
             level: 1,
             exp: 0,
             gold: 150,
             expNeeded: 100,
-            weapo        /* Motif Suku Dayak/Toraja Neon Futuristik di Sudut Layar */
-        .tribal-corner {
-            position: absolute;
-            width: 250px;
-            height: 250px;
-            opacity: 0.35;
-            z-index: 2;
-            pointer-events: none;
-            filter: drop-shadow(0 0 8px var(--neon-blue));
-        }
-
-        .top-left {
-            top: 20px;
-            left: 20px;
-            border-top: 4px solid var(--neon-blue);
-            border-left: 4px solid var(--neon-blue);
-            border-top-left-radius: 20px;
-        }
-
-        .bottom-right {
-            bottom: 20px;
-            right: 20px;
-            border-bottom: 4px solid var(--neon-magenta);
-            border-right: 4px solid var(--neon-magenta);
-            border-bottom-right-radius: 20px;
-        }
-
-        /* Pola Ornamen Dekoratif di dalam Pojok */
-        .tribal-pattern {
-            width: 100%;
-            height: 100%;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .pattern-line {
-            height: 2px;
-            background: linear-gradient(90deg, var(--neon-blue), transparent);
-            margin: 5px 0;
-        }
-
-        /* Kontainer Utama Menu */
-        .menu-container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            max-width: 800px;
-            width: 90%;
-            padding: 40px;
-            background: rgba(10, 10, 25, 0.6);
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            border-radius: 24px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8),
-                        0 0 30px rgba(0, 240, 255, 0.1);
-            animation: fade-in 1.5s ease-out;
-        }
-
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Judul Game Etnik & Sci-Fi */
-        .title-sub {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.1rem;
-            letter-spacing: 0.5rem;
-            color: var(--neon-gold);
-            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .title-main {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            background: linear-gradient(135deg, #ffffff 30%, var(--neon-blue) 70%, var(--neon-magenta) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-
-        /* Ilustrasi Karakter Stickman */
-        .stickman-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 180px;
-            margin-bottom: 35px;
-            position: relative;
-        }
-
-        .stickman-svg {
-            width: 150px;
-            height: 150px;
-            filter: drop-shadow(0 0 12px var(--neon-blue));
-            animation: hover-animation 4s infinite ease-in-out;
-        }
-
-        @keyframes hover-animation {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
-        }
-
-        /* Tombol Menu */
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            max-width: 320px;
-            margin: 0 auto;
-        }
-
-        .btn {
-            background: transparent;
-            border: 2px solid var(--neon-blue);
-            color: var(--text-light);
-            padding: 14px 28px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            border-radius: 12px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            outline: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: rgba(0, 240, 255, 0.1);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: var(--neon-blue);
-            color: var(--space-bg);
-            box-shadow: 0 0 25px var(--neon-blue);
-            transform: scale(1.05);
-        }
-
-        .btn-secondary {
-            border-color: rgba(240, 244, 248, 0.3);
-            color: rgba(240, 244, 248, 0.7);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--neon-magenta);
-            color: #fff;
-            background: rgba(255, 0, 127, 0.1);
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-            transform: scale(1.03);
-        }
-
-        /* Overlay Pop-up Pengaturan */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--overlay-dark);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(8px);
-        }
-
-        .modal-content {
-            background: #090918;
-            border: 2px solid var(--neon-magenta);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 0 35px rgba(255, 0, 127, 0.3);
-            animation: scale-up 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes scale-up {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            color: var(--neon-magenta);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .setting-label {
-            font-size: 1rem;
-            color: rgba(240, 244, 248, 0.8);
-        }
-
-        .toggle-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #fff;
-            padding: 6px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Share Tech Mono', monospace;
-            transition: all 0.2s;
-        }
-
-        .toggle-btn.active {
-            background: var(--neon-magenta);
-            border-color: var(--neon-magenta);
-            box-shadow: 0 0 10px var(--neon-magenta);
-        }
-
-        .btn-close {
-            margin-top: 15px;
-            width: 100%;
-        }
-
-        /* Notifikasi Toast */
-        .toast {
-            position: fixed;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 240, 255, 0.9);
-            color: var(--space-bg);
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-family: 'Share Tech Mono', monospace;
-            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.4);
-            z-index: 1000;
-            transition: bottom 0.5s ease-in-out;
-        }
-
-        .toast.show {
-            bottom: 40px;
-        }
-
-        /* Audio Controls info */
-        .audio-disclaimer {
-            font-size: 0.75rem;
-            color: rgba(240, 244, 248, 0.4);
-            margin-top: 15px;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Latar Belakang Bintang Neon -->
-    <div class="stars-container" id="starsContainer"></div>
-
-    <!-- Ornamen Motif Suku Neon (Kiri Atas) -->
-    <div class="tribal-corner top-left">
-        <div class="tribal-pattern">
-            <div class="pattern-line" style="width: 100%;"></div>
-            <div class="pattern-line" style="width: 80%;"></div>
-            <div class="pattern-line" style="width: 60%;"></div>
-            <div style="font-family:'Share Tech Mono'; font-size: 10px; color: var(--neon-blue); letter-spacing: 2px; margin-left: 5px;">SYS_ON // N_ODYSSEY</div>
-        </div>
-    </div>
-
-    <!-- Ornamen Motif Suku Neon (Kanan Bawah) -->
-    <div class="tribal-corner bottom-right">
-        <div class="tribal-pattern" style="justify-content: flex-end; text-align: right;">
-            <div style="font-family:'Share Tech Mono'; font-size: 10px; color: var(--neon-magenta); letter-spacing: 2px; margin-right: 5px; margin-bottom: 10px;">SEKTOR_X_IDN</div>
-            <div class="pattern-line" style="width: 60%; margin-left: auto; background: linear-gradient(-90deg, var(--neon-magenta), transparent);"></div>
-            <div class="pattern-line" style="width: 80%; margin-left: auto; background: linear-gradient(-90deg, var(--neon-magenta), transparent);"></div>
-            <div class="pattern-line" style="width: 100%; margin-left: auto; background: linear-gradient(-90deg, var(--neon-magenta), transparent);"></div>
-        </div>
-    </div>
-
-    <!-- Kontainer Menu Utama -->
-    <div class="menu-container">
-        <div class="title-sub">GALAXY RAYA CHRONICLES</div>
-        <h1 class="title-main">NUSANTARA ODYSSEY</h1>
-
-        <!-- Ilustrasi Animasi Stickman Luar Angkasa dengan Senjata Keris Plasma -->
-        <div class="stickman-container">
-            <svg class="stickman-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <!-- Helm/Visor Luar Angkasa -->
-                <circle cx="50" cy="25" r="8" stroke="#00f0ff" stroke-width="2.5" fill="none" />
-                <path d="M46 25 Q50 21 54 25" stroke="#ff007f" stroke-width="2" fill="none" />
-                
-                <!-- Badan / Torso -->
-                <line x1="50" y1="33" x2="50" y2="60" stroke="#ffffff" stroke-width="3" />
-                
-                <!-- Tangan Kiri (Memegang Kemudi/Kosong) -->
-                <line x1="50" y1="40" x2="35" y2="48" stroke="#ffffff" stroke-width="2.5" />
-                <line x1="35" y1="48" x2="25" y2="42" stroke="#ffffff" stroke-width="2.5" />
-                
-                <!-- Tangan Kanan (Memegang Pusaka Keris Plasma) -->
-                <line x1="50" y1="40" x2="68" y2="48" stroke="#ffffff" stroke-width="2.5" />
-                <!-- Keris Plasma (Senjata Khas Suku Nusantara) -->
-                <!-- Pegangan Keris -->
-                <line x1="68" y1="48" x2="72" y2="44" stroke="#ffaa00" stroke-width="3" />
-                <!-- Bilah Berkelok-kelok Neon (Lekukan Keris) -->
-                <path d="M72 44 Q76 38 73 34 T80 25 T77 15" fill="none" stroke="#ff007f" stroke-width="3" stroke-linecap="round" filter="drop-shadow(0 0 5px #ff007f)" />
-
-                <!-- Kaki Kiri -->
-                <line x1="50" y1="60" x2="40" y2="78" stroke="#ffffff" stroke-width="2.5" />
-                <line x1="40" y1="78" x2="33" y2="85" stroke="#ffffff" stroke-width="2.5" />
-                
-                <!-- Kaki Kanan -->
-                <line x1="50" y1="60" x2="60" y2="78" stroke="#ffffff" stroke-width="2.5" />
-                <line x1="60" y1="78" x2="68" y2="85" stroke="#ffffff" stroke-width="2.5" />
-
-                <!-- Efek Aura Etnik Halus -->
-                <circle cx="50" cy="50" r="35" stroke="rgba(0, 240, 255, 0.1)" stroke-width="1" stroke-dasharray="5,5" fill="none"/>
-            </svg>
-        </div>
-
-        <!-- Kelompok Tombol Menu Utama -->
-        <div class="button-group">
-            <button class="btn btn-primary" id="btnStart">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                MULAI PETUALANGAN
-            </button>
-            <button class="btn btn-secondary" id="btnSettings">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                PENGATURAN
-            </button>
-        </div>
-
-        <div class="audio-disclaimer">Format data otomatis tersinkronisasi dengan semesta lokal.</div>
-    </div>
-
-    <!-- Pop-up Modal Pengaturan -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <h2 class="modal-title">Konfigurasi Kokpit</h2>
-            
-            <div class="setting-row">
-                <span class="setting-label">Audio & Musik Plasma</span>
-                <button class="toggle-btn active" id="toggleAudio">AKTIF</button>
-            </div>
-            
-            <div class="setting-row">
-                <span class="setting-label">Partikel Bintang Neon</span>
-                <button class="toggle-btn active" id="toggleStars">AKTIF</button>
-            </div>
-
-            <div class="setting-row">
-                <span class="setting-label">Reset Data Karakter</span>
-                <button class="toggle-btn" id="btnResetData" style="background: rgba(255, 0, 0, 0.2); border-color: red; color: red;">RESET</button>
-            </div>
-
-            <button class="btn btn-primary btn-close" id="btnCloseSettings">SIMPAN & KEMBALI</button>
-        </div>
-    </div>
-
-    <!-- Toast Notifikasi -->
-    <div class="toast" id="toastNotification">Sistem diinisialisasi! Data perjalanan aman.</div>
-
-    <script>
-        // --- 1. GENERASI BINTANG LATAR BELAKANG ---
-        const starsContainer = document.getElementById('starsContainer');
-        const numStars = 100;
-
-        function createStars() {
-            starsContainer.innerHTML = '';
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // Variasi ukuran bintang
-                const size = Math.random() * 3 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                // Posisi acak
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                
-                // Variasi warna bintang (biru neon, magenta neon, putih hangat)
-                const colors = ['#fff', '#00f0ff', '#ff007f', '#ffaa00'];
-                star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Durasi animasi pulse acak
-                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                star.style.animationDelay = `${Math.random() * 2}s`;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-        createStars();
-
-        // Regenerasi bintang jika layar di-resize
-        window.addEventListener('resize', createStars);
-
-
-        // --- 2. LOGIKA INcore INITIALIZATION (LokalStorage) ---
-        // Menentukan data dasar untuk RPG Nusantara Odyssey
-        const DEFAULT_STATS = {
-            level: 1,
-            exp: 0,
-            gold: 150,                     // Koin emas antariksa mulia
-            expNeeded: 100,
             weapon: "Keris Plasma Lvl 1",
             weaponDamage: 15,
             shipName: "Gatotkaca Space Cruiser Mk-I",
-            spaceshipUpgrade: 1,           // Tingkatan modul pesawat suku
+            spaceshipUpgrade: 1,
             hp: 100,
             maxHp: 100,
             currentSector: "Sektor Barito Neon",
             unlockedLevels: 1
         };
 
-        // Memeriksa dan menginisialisasi status pemain di localStorage
         function initializePlayerData(forceReset = false) {
             const existingData = localStorage.getItem('playerStats');
             
             if (!existingData || forceReset) {
-                // Konversi objek JSON ke string untuk disimpan
                 localStorage.setItem('playerStats', JSON.stringify(DEFAULT_STATS));
-                console.log("Inisialisasi berhasil: Data awal baru dibuat.");
-                showToast(forceReset ? "Sistem Reset! Memulai takdir baru." : "Inisialisasi sistem berhasil! Data petualangan baru dicatat.");
+                showToast(forceReset ? "Sistem di-format! Data baru berhasil dibuat." : "Inisialisasi berhasil! Memori dicatat.");
             } else {
-                console.log("Data petualangan terdeteksi. Selamat datang kembali, Penjelajah.");
-                // Jika ingin selalu memastikan format properti terbaru ada
                 const currentData = JSON.parse(existingData);
-                const updatedData = { ...DEFAULT_STATS, 
+                const updatedData = { ...DEFAULT_STATS, ...currentData };
+                localStorage.setItem('playerStats', JSON.stringify(updatedData));
+            }
+        }
+
+        // --- 3. KONTROLLER MENU UTAMA ---
+        const btnStart = document.getElementById('btnStart');
+        const btnSettings = document.getElementById('btnSettings');
+        const settingsModal = document.getElementById('settingsModal');
+        const btnCloseSettings = document.getElementById('btnCloseSettings');
+        const toggleAudio = document.getElementById('toggleAudio');
+        const toggleStars = document.getElementById('toggleStars');
+        const btnResetData = document.getElementById('btnResetData');
+
+        // Navigasi Mulai
+        const handleStartGame = (e) => {
+            e.preventDefault();
+            initializePlayerData();
+            
+            document.querySelector('.menu-container').style.animation = 'fade-in 0.4s ease-in reverse';
+            document.querySelector('.menu-container').style.opacity = '0';
+            
+            showToast("Menginisialisasi Hyperdrive...");
+            
+            setTimeout(() => {
+                window.location.href = 'pesawat.html';
+            }, 600);
+        };
+
+        btnStart.addEventListener('click', handleStartGame);
+
+        // Pengaturan
+        btnSettings.addEventListener('click', (e) => {
+            e.preventDefault();
+            settingsModal.style.display = 'flex';
+        });
+
+        btnCloseSettings.addEventListener('click', (e) => {
+            e.preventDefault();
+            settingsModal.style.display = 'none';
+            showToast("Konfigurasi sistem aman.");
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+
+        // Toggle Audio
+        toggleAudio.addEventListener('click', () => {
+            const isActive = toggleAudio.classList.toggle('active');
+            toggleAudio.textContent = isActive ? 'AKTIF' : 'NON-AKTIF';
+            localStorage.setItem('setting_audio', isActive ? 'true' : 'false');
+        });
+
+        // Toggle Bintang
+        toggleStars.addEventListener('click', () => {
+            const isActive = toggleStars.classList.toggle('active');
+            toggleStars.textContent = isActive ? 'AKTIF' : 'NON-AKTIF';
+            starsContainer.style.display = isActive ? 'block' : 'none';
+        });
+
+        // Format Ulang
+        btnResetData.addEventListener('click', () => {
+            const confirmReset = confirm("Apakah Anda yakin ingin memformat ulang seluruh memori petualangan?");
+            if (confirmReset) {
+                initializePlayerData(true);
+            }
+        });
+
+        // --- 4. TOAST SENSOR ---
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Jalankan saat halaman dibuka
+        window.onload = () => {
+            if (localStorage.getItem('setting_audio') === 'false') {
+                toggleAudio.classList.remove('active');
+                toggleAudio.textContent = 'NON-AKTIF';
+            }
+            if(!localStorage.getItem('playerStats')) {
+                initializePlayerData();
+            }
+        };
+    </script>
+</body>
+</html>

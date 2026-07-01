@@ -312,8 +312,8 @@
 
         /* Perspektif Kotak 3D Star Wars */
         .crawl-viewport {
-            width: 85%;
-            max-width: 600px;
+            width: 90%;
+            max-width: 650px;
             height: 75vh;
             perspective: 250px;
             position: relative;
@@ -329,26 +329,28 @@
             color: var(--neon-gold);
             font-family: 'Share Tech Mono', monospace;
             font-weight: 700;
-            font-size: clamp(0.95rem, 2.5vw, 1.25rem);
-            line-height: 1.6;
+            /* Diperbesar agar narasinya mudah dibaca di layar HP */
+            font-size: clamp(1.2rem, 3.2vw, 1.5rem);
+            line-height: 1.7;
             letter-spacing: 1px;
-            text-shadow: 0 0 8px rgba(255, 170, 0, 0.35);
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.45);
             /* Animasi Berjalan */
-            animation: scroll-crawl 45s linear forwards;
+            animation: scroll-crawl 50s linear forwards;
         }
 
         .crawl-content h2 {
             font-family: 'Orbitron', sans-serif;
             text-align: center;
-            font-size: clamp(1.4rem, 4vw, 1.8rem);
-            margin-bottom: 20px;
+            /* Ukuran judul diperbesar */
+            font-size: clamp(1.8rem, 5.5vw, 2.5rem);
+            margin-bottom: 50px; /* Jeda ruang sebelum paragraf pertama muncul */
             color: #fff;
-            text-shadow: 0 0 15px var(--neon-blue);
-            letter-spacing: 2px;
+            text-shadow: 0 0 20px var(--neon-blue);
+            letter-spacing: 3px;
         }
 
         .crawl-content p {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         @keyframes scroll-crawl {
@@ -361,8 +363,8 @@
                 opacity: 0.95;
             }
             100% {
-                top: -160%;
-                transform: rotateX(30deg) translateY(-1400px);
+                top: -190%;
+                transform: rotateX(30deg) translateY(-1600px);
                 opacity: 0;
             }
         }
@@ -497,10 +499,10 @@
     <div class="story-overlay" id="storyOverlay">
         <div class="crawl-viewport">
             <div class="crawl-content" id="crawlContent">
-                <h2>EPISODE I: HARAPAN ANTARIKSA</h2>
+                <h2>HARAPAN ANTARIKSA</h2>
                 <p>Akibat perang nuklir global yang mengerikan, peradaban di Bumi hancur lebur. Radiasi mematikan memicu mutasi ganas, mengubah sebagian besar populasi manusia yang tertinggal menjadi monster liar yang mengerikan.</p>
                 <p>Namun, harapan belum sepenuhnya musnah. Golongan Cendikiawan dan intelektual yang tersisa bersatu untuk melarikan diri dari sistem tata surya menggunakan tiga bahtera raksasa. Perjalanan luar angkasa dimulai, dengan masing-masing bahtera menggenggam satu pecahan pusaka kuno berkekuatan magis siber: Amulet of Bhinneka Tunggal Ika.</p>
-                <p>Setelah pengembaraan berabad-abad menembus kehampaan galaksi, mereka berhasil menemukan tiga planet layak huni: Kepler-Jawa, Ranah-Minang, dan Borneo-Dayak. Masing-masing bahtera mendarat, memulai kehidupan baru di tanah jajahan mereka sendiri.</p>
+                <p>Setelah pengembaraan berabad-century menembus kehampaan galaksi, mereka berhasil menemukan tiga planet layak huni: Kepler-Jawa, Ranah-Minang, dan Borneo-Dayak. Masing-masing bahtera mendarat, memulai kehidupan baru di tanah jajahan mereka sendiri.</p>
                 <p>Namun, bayang-bayang masa lalu melahirkan paranoid. Ketakutan ekstrem akan kontaminasi virus mutan dari Bumi membuat ketiga planet mengisolasi diri secara ketat, memutus jalur komunikasi, dan saling mencurigai satu sama lain...</p>
                 <p>Di tempat lain, sisa-sisa manusia dari Bumi yang tidak sempat menaiki ketiga bahtera berhasil mendirikan stasiun luar angkasa raksasa berjalan. Mengetahui adanya konflik dan isolasi di antara saudara-saudara mereka, stasiun ini meluncur demi satu tujuan mulia: menyatukan kembali ketiga pecahan Amulet of Bhinneka Tunggal Ika.</p>
                 <p>Malang tak dapat ditolak, sesaat sebelum mendekati orbit tujuan, badai meteor besar menghantam stasiun antariksa tersebut hingga luluh lantak. Hanya dirimu yang berhasil selamat, setelah kedua orang tuamu memasukkanmu secara darurat ke dalam sekoci penyelamat kecil...</p>
@@ -629,12 +631,12 @@
                 storyOverlay.style.display = 'flex';
                 showToast("Sinyal Memori Masa Lalu Terdeteksi...");
                 
-                // Set sistem auto-redirect ketika narasi selesai berjalan (durasi 45 detik sesuai animasi CSS)
+                // Set sistem auto-redirect ketika narasi selesai berjalan (durasi 50 detik sesuai animasi CSS)
                 setTimeout(() => {
                     if (storyOverlay.style.display === 'flex') {
                         navigateToCockpit();
                     }
-                }, 45000);
+                }, 50000);
             }, 500);
         };
 

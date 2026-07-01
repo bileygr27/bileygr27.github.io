@@ -1,1 +1,838 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sektor Kepler-Jawa - Candi Siber</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --space-bg: #020208;
+            --neon-blue: #00f0ff;
+            --neon-magenta: #ff007f;
+            --neon-gold: #ffaa00;
+            --neon-green: #39ff14;
+            --text-light: #f0f4f8;
+            --hud-bg: rgba(6, 6, 20, 0.9);
+            --border-glow: rgba(0, 240, 255, 0.2);
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--space-bg);
+            color: var(--text-light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Latar Belakang Candi Siber & Partikel */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at top right, rgba(255, 0, 127, 0.08), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(0, 240, 255, 0.08), transparent 40%),
+                linear-gradient(180deg, #020208 0%, #05051a 100%);
+        }
+
+        /* Garis Grid Hologram */
+        .holo-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* HUD ATAS STATUS */
+        header {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(180deg, rgba(8, 8, 24, 0.95) 0%, rgba(8, 8, 24, 0.6) 100%);
+            border-bottom: 1px solid var(--border-glow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .planet-info-hud {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .planet-title-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--neon-gold);
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .sector-desc {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+        }
+
+        .hud-player-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hud-stat {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hud-stat.gold {
+            border-color: rgba(255, 170, 0, 0.25);
+            color: var(--neon-gold);
+        }
+
+        /* CONTAINER GAMEPLAY */
+        main {
+            position: relative;
+            z-index: 5;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .game-panel {
+            background: var(--hud-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8),
+                        inset 0 0 20px rgba(0, 240, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            overflow: hidden;
+            animation: panel-enter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+        }
+
+        @keyframes panel-enter {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* SCREEN 1: INTRO CERITA */
+        .intro-screen {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex: 1;
+            gap: 20px;
+        }
+
+        .candi-silhouette {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 0 10px var(--neon-gold));
+            animation: pulse-candi 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-candi {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        .story-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: rgba(240, 244, 248, 0.85);
+            max-width: 600px;
+            margin: 15px 0;
+        }
+
+        .story-dialogue {
+            background: rgba(255, 170, 0, 0.05);
+            border-left: 3px solid var(--neon-gold);
+            padding: 12px 18px;
+            border-radius: 4px 12px 12px 4px;
+            font-style: italic;
+            text-align: left;
+            max-width: 550px;
+            color: #ffcc66;
+            font-size: 0.9rem;
+        }
+
+        /* SCREEN 2: BATTLE SCREEN */
+        .battle-screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            padding: 20px;
+            justify-content: space-between;
+        }
+
+        /* Visual Arena Pertempuran */
+        .battle-arena {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            flex: 1;
+            min-height: 220px;
+            position: relative;
+            border-bottom: 2px dashed rgba(0, 240, 255, 0.15);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        /* Kolom Karakter */
+        .fighter-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 140px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .fighter-svg {
+            width: 110px;
+            height: 110px;
+        }
+
+        /* Animasi Serangan */
+        .player-slash {
+            animation: slash-right 0.5s ease-out;
+        }
+        @keyframes slash-right {
+            0% { transform: translateX(0) scaleX(1); }
+            30% { transform: translateX(80px) scaleX(1.1) rotate(5deg); }
+            100% { transform: translateX(0) scaleX(1); }
+        }
+
+        .enemy-slash {
+            animation: slash-left 0.5s ease-out;
+        }
+        @keyframes slash-left {
+            0% { transform: translateX(0) scaleX(1); }
+            30% { transform: translateX(-80px) scaleX(1.1) rotate(-5deg); }
+            100% { transform: translateX(0) scaleX(1); }
+        }
+
+        /* Animasi Terluka */
+        .hurt-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); filter: brightness(1); }
+            20%, 60% { transform: translateX(-8px); filter: brightness(1.5) drop-shadow(0 0 10px red); }
+            40%, 80% { transform: translateX(8px); filter: brightness(1.5) drop-shadow(0 0 10px red); }
+        }
+
+        /* Status HP Bar */
+        .hud-status-panel {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .fighter-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .hp-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .hp-bar-fill {
+            height: 100%;
+            width: 100%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 8px var(--neon-blue);
+            transition: width 0.3s ease;
+        }
+
+        .enemy-hp-fill {
+            background: var(--neon-magenta);
+            box-shadow: 0 0 8px var(--neon-magenta);
+        }
+
+        /* Log Aksi Tempur */
+        .battle-log {
+            background: rgba(2, 2, 8, 0.7);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            border-radius: 10px;
+            height: 70px;
+            padding: 10px 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            overflow-y: auto;
+            color: #a5d6a7;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        /* Tombol Aksi */
+        .battle-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* SCREEN 3: END SCREEN (MENANG/KALAH) */
+        .end-screen {
+            display: none;
+            padding: 30px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex: 1;
+            gap: 20px;
+        }
+
+        .end-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .end-title.win {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .end-title.lose {
+            color: var(--neon-magenta);
+            text-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+        }
+
+        .reward-box {
+            background: rgba(255, 170, 0, 0.08);
+            border: 1px solid var(--neon-gold);
+            padding: 15px 30px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--neon-gold);
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.15);
+        }
+
+        /* TOMBOL GLOBAL */
+        .btn {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--text-light);
+            padding: 12px 24px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            outline: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-gold {
+            border-color: var(--neon-gold);
+            background: rgba(255, 170, 0, 0.05);
+        }
+
+        .btn-gold:hover, .btn-gold:active {
+            background: var(--neon-gold);
+            color: var(--space-bg);
+            box-shadow: 0 0 15px var(--neon-gold);
+        }
+
+        .btn-magenta {
+            border-color: var(--neon-magenta);
+            background: rgba(255, 0, 127, 0.05);
+        }
+
+        .btn-magenta:hover, .btn-magenta:active {
+            background: var(--neon-magenta);
+            color: #fff;
+            box-shadow: 0 0 15px var(--neon-magenta);
+        }
+
+        .btn-blue {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .btn-blue:hover, .btn-blue:active {
+            background: var(--neon-blue);
+            color: var(--space-bg);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        /* Notifikasi Toast */
+        .toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 240, 255, 0.95);
+            color: var(--space-bg);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            font-family: 'Share Tech Mono', monospace;
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+            z-index: 1000;
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .toast.show {
+            bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Latar Belakang -->
+    <div class="background-overlay"></div>
+    <div class="holo-grid"></div>
+
+    <!-- HUD ATAS -->
+    <header>
+        <div class="planet-info-hud">
+            <div class="planet-title-text">KEPLER-JAWA SEKTOR</div>
+            <div class="sector-desc">KOORDINAT: CANDI_SIBER_01</div>
+        </div>
+
+        <div class="hud-player-stats">
+            <div class="hud-stat">
+                <span>LVL</span>
+                <span id="hudLevel">-</span>
+            </div>
+            <div class="hud-stat gold">
+                <span>🪙</span>
+                <span id="hudGold">-</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- AREA UTAMA PERMAINAN -->
+    <main>
+        <div class="game-panel" id="gamePanel">
+            
+            <!-- LAYAR 1: INTRO CERITA -->
+            <div class="intro-screen" id="introScreen">
+                <!-- SVG Candi Borobudur/Prambanan Bergaya Hologram -->
+                <svg class="candi-silhouette" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 5 L55 18 L45 18 Z" fill="none" stroke="var(--neon-gold)" stroke-width="2" />
+                    <path d="M35 18 H65 V28 H35 Z" fill="none" stroke="var(--neon-gold)" stroke-width="2" />
+                    <path d="M25 28 H75 V45 H25 Z" fill="none" stroke="var(--neon-gold)" stroke-width="2" />
+                    <path d="M15 45 H85 V70 H15 Z" fill="none" stroke="var(--neon-gold)" stroke-width="2" />
+                    <path d="M5 70 H95 V95 H5 Z" fill="none" stroke="var(--neon-gold)" stroke-width="2" />
+                    <!-- Pintu masuk candi berbentuk laser hologram -->
+                    <rect x="42" y="70" width="16" height="25" fill="rgba(0, 240, 255, 0.2)" stroke="var(--neon-blue)" stroke-width="1.5" />
+                    <line x1="50" y1="18" x2="50" y2="95" stroke="rgba(255, 170, 0, 0.2)" stroke-width="1" />
+                </svg>
+
+                <h2 class="planet-title-text" style="font-size: 1.5rem; letter-spacing: 2px;">Candi Siber Kejayaan Jawa</h2>
+                
+                <p class="story-text">
+                    Kapal Pinisi Anda mendarat di pelataran gantung Candi Siber. Di depan gerbang plasma, 
+                    sesosok prajurit berwujud stickman dengan zirah siber menghalangi jalan. 
+                    Kepalanya memakai Blangkon Laser yang memancarkan cahaya neon jingga.
+                </p>
+
+                <div class="story-dialogue">
+                    "Sopo kowe? Berani sekali menginjakkan kaki di Candi Luhur Kepler-Jawa! Hadapi sabetan tombak energiku jika ingin masuk!"
+                </div>
+
+                <button class="btn btn-gold" id="btnStartBattle">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    HADAPI DENGAN KERIS PLASMA
+                </button>
+            </div>
+
+            <!-- LAYAR 2: PERTARUHAN BATTLE -->
+            <div class="battle-screen" id="battleScreen">
+                
+                <!-- Arena Karakter -->
+                <div class="battle-arena">
+                    
+                    <!-- Player (Kiri) -->
+                    <div class="fighter-col" id="playerCol">
+                        <div class="hud-status-panel">
+                            <div class="fighter-name" id="playerName">Pemain</div>
+                            <div class="hp-bar-container">
+                                <div class="hp-bar-fill" id="playerHPBar"></div>
+                            </div>
+                            <div style="font-size: 0.65rem; margin-top: 3px; font-family: 'Share Tech Mono';" id="playerHPText">100/100</div>
+                        </div>
+                        
+                        <!-- SVG Stickman Player -->
+                        <svg class="fighter-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Kepala & Visor -->
+                            <circle cx="50" cy="30" r="9" fill="#020208" stroke="#ffffff" stroke-width="2" />
+                            <path d="M46 30 Q50 26 54 30" stroke="var(--neon-blue)" stroke-width="1.5" fill="none" />
+                            <!-- Tubuh -->
+                            <line x1="50" y1="39" x2="50" y2="65" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Tangan Kiri -->
+                            <line x1="50" y1="45" x2="35" y2="52" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Tangan Kanan + Keris Plasma -->
+                            <line x1="50" y1="45" x2="68" y2="52" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Keris Plasma -->
+                            <line x1="68" y1="52" x2="72" y2="48" stroke="#ffaa00" stroke-width="3" />
+                            <path d="M72 48 Q76 42 73 38 T80 29 T77 19" fill="none" stroke="var(--neon-magenta)" stroke-width="2.5" stroke-linecap="round" filter="drop-shadow(0 0 4px var(--neon-magenta))" />
+                            <!-- Kaki -->
+                            <line x1="50" y1="65" x2="40" y2="85" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="50" y1="65" x2="60" y2="85" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
+                    <!-- Versus Label -->
+                    <div style="font-family:'Orbitron'; font-weight:900; font-size:1.5rem; color:var(--neon-gold); opacity: 0.6; align-self:center; margin-bottom: 20px;">VS</div>
+
+                    <!-- Enemy (Kanan) -->
+                    <div class="fighter-col" id="enemyCol">
+                        <div class="hud-status-panel">
+                            <div class="fighter-name" style="color:var(--neon-magenta)">Ki Penjaga Candi</div>
+                            <div class="hp-bar-container">
+                                <div class="hp-bar-fill enemy-hp-fill" id="enemyHPBar"></div>
+                            </div>
+                            <div style="font-size: 0.65rem; margin-top: 3px; font-family: 'Share Tech Mono';" id="enemyHPText">120/120</div>
+                        </div>
+
+                        <!-- SVG Stickman Penjaga dengan Blangkon Laser -->
+                        <svg class="fighter-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="transform: scaleX(-1);">
+                            <!-- Blangkon Laser Jingga/Emas -->
+                            <!-- Bagian depan blangkon -->
+                            <path d="M41 21 Q50 14 59 21 L60 25 H40 Z" fill="none" stroke="var(--neon-gold)" stroke-width="2" />
+                            <!-- Kuncungan belakang khas Blangkon -->
+                            <circle cx="37" cy="24" r="3" fill="var(--neon-gold)" filter="drop-shadow(0 0 3px var(--neon-gold))" />
+
+                            <!-- Kepala -->
+                            <circle cx="50" cy="30" r="9" fill="#020208" stroke="#ffffff" stroke-width="2" />
+                            <!-- Tubuh -->
+                            <line x1="50" y1="39" x2="50" y2="65" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Tangan Kiri -->
+                            <line x1="50" y1="45" x2="35" y2="52" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Tangan Kanan memegang Tombak Plasma -->
+                            <line x1="50" y1="45" x2="68" y2="55" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Tombak Plasma -->
+                            <line x1="68" y1="20" x2="68" y2="85" stroke="#8b5a2b" stroke-width="2" stroke-linecap="round" />
+                            <path d="M68 20 L68 10" stroke="var(--neon-blue)" stroke-width="3" filter="drop-shadow(0 0 5px var(--neon-blue))" stroke-linecap="round" />
+                            <!-- Kaki -->
+                            <line x1="50" y1="65" x2="40" y2="85" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="50" y1="65" x2="60" y2="85" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
+                </div>
+
+                <!-- Log Alur Battle -->
+                <div class="battle-log" id="battleLog">Menghubungkan sinyal tempur... Ketuk SERANG untuk memulai pertarungan!</div>
+
+                <!-- Tombol Aksi Pertarungan -->
+                <div class="battle-controls">
+                    <button class="btn btn-magenta" onclick="playerAction('attack')">
+                        ⚡ SERANG (KERIS)
+                    </button>
+                    <button class="btn btn-blue" onclick="playerAction('heal')">
+                        🟢 PULIHKAN HP
+                    </button>
+                </div>
+            </div>
+
+            <!-- LAYAR 3: SELESAI GAME (MENANG/KALAH) -->
+            <div class="end-screen" id="endScreen">
+                <h2 class="end-title" id="endTitle">PERTANDINGAN SELESAI</h2>
+                <p class="story-text" id="endMessage">Bagaimana akhir dari konfrontasi epik Anda?</p>
+                
+                <div class="reward-box" id="rewardBox" style="display: none;">
+                    <span>HADIAH:</span>
+                    <span>🪙 +200 Emas</span>
+                </div>
+
+                <a href="../pesawat.html" class="btn btn-gold" id="btnBackToShip" style="margin-top: 15px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    KEMBALI KE ORBIT PESAWAT
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Toast Notifikasi -->
+    <div class="toast" id="toastNotification">Sinyal sinkronisasi aktif.</div>
+
+    <script>
+        // --- 1. SINKRONISASI DATA PLAYER ---
+        let playerData = null;
+
+        function loadPlayerStats() {
+            const rawData = localStorage.getItem('playerStats');
+            if (!rawData) {
+                showToast("Peringatan: Memori pemain kosong! Kembali ke orbit...");
+                setTimeout(() => {
+                    window.location.href = '../pesawat.html';
+                }, 1500);
+                return;
+            }
+
+            playerData = JSON.parse(rawData);
+            
+            // Perbarui visual HUD
+            document.getElementById('hudLevel').textContent = playerData.level;
+            document.getElementById('hudGold').textContent = playerData.gold;
+            document.getElementById('playerName').textContent = playerData.weapon ? "Pemain (Keris)" : "Pemain";
+        }
+
+        // --- 2. SISTEM PERTEMPURAN TURN-BASED ---
+        let playerHP = 100;
+        let playerMaxHP = 100;
+        let enemyHP = 120;
+        let enemyMaxHP = 120;
+        let isPlayerTurn = true;
+        let isBattleEnded = false;
+
+        const introScreen = document.getElementById('introScreen');
+        const battleScreen = document.getElementById('battleScreen');
+        const endScreen = document.getElementById('endScreen');
+        const battleLog = document.getElementById('battleLog');
+
+        // Memulai pertarungan saat tombol ditekan
+        document.getElementById('btnStartBattle').addEventListener('click', () => {
+            introScreen.style.display = 'none';
+            battleScreen.style.display = 'flex';
+            
+            // Siapkan HP berdasarkan status rekayasa kapal/modul pemain
+            if (playerData) {
+                playerMaxHP = playerData.maxHp || 100;
+                playerHP = playerMaxHP;
+            }
+            
+            updateHPBars();
+            addLog("Ki Penjaga mengayunkan Tombak Plasma! 'Maju kowe, bocah!'");
+        });
+
+        function updateHPBars() {
+            // Player
+            const playerPercent = Math.max(0, (playerHP / playerMaxHP) * 100);
+            document.getElementById('playerHPBar').style.width = `${playerPercent}%`;
+            document.getElementById('playerHPText').textContent = `${playerHP}/${playerMaxHP} HP`;
+
+            // Enemy
+            const enemyPercent = Math.max(0, (enemyHP / enemyMaxHP) * 100);
+            document.getElementById('enemyHPBar').style.width = `${enemyPercent}%`;
+            document.getElementById('enemyHPText').textContent = `${enemyHP}/${enemyMaxHP} HP`;
+        }
+
+        function addLog(text) {
+            battleLog.innerHTML = `> ${text}<br>` + battleLog.innerHTML;
+        }
+
+        // Aksi Pemain
+        function playerAction(action) {
+            if (!isPlayerTurn || isBattleEnded) return;
+
+            const playerCol = document.getElementById('playerCol');
+            const enemyCol = document.getElementById('enemyCol');
+
+            if (action === 'attack') {
+                isPlayerTurn = false;
+                
+                // Ambil damage senjata dari database (default 15 jika tidak ada)
+                const baseDmg = playerData ? playerData.weaponDamage : 15;
+                const finalDmg = baseDmg + Math.floor(Math.random() * 8); // Ada variasi serangan acak
+
+                // Animasi sabetan player
+                playerCol.classList.add('player-slash');
+                
+                setTimeout(() => {
+                    enemyHP = Math.max(0, enemyHP - finalDmg);
+                    updateHPBars();
+                    
+                    // Efek guncang musuh terkena sabetan keris
+                    enemyCol.classList.add('hurt-shake');
+                    addLog(`Anda menebas Ki Penjaga dengan Keris Plasma! Kerusakan: [${finalDmg} DMG]`);
+                    
+                    setTimeout(() => {
+                        playerCol.classList.remove('player-slash');
+                        enemyCol.classList.remove('hurt-shake');
+                        
+                        if (enemyHP <= 0) {
+                            endGame(true);
+                        } else {
+                            setTimeout(enemyTurnAction, 800);
+                        }
+                    }, 400);
+
+                }, 200);
+
+            } else if (action === 'heal') {
+                isPlayerTurn = false;
+                const healAmount = 25 + Math.floor(Math.random() * 10);
+                playerHP = Math.min(playerMaxHP, playerHP + healAmount);
+                updateHPBars();
+                
+                addLog(`Anda memulihkan sirkuit bio-energi tubuh Anda! HP bertambah [+${healAmount}]`);
+                
+                setTimeout(enemyTurnAction, 1000);
+            }
+        }
+
+        // Aksi Otomatis Musuh
+        function enemyTurnAction() {
+            if (isBattleEnded) return;
+
+            const enemyCol = document.getElementById('enemyCol');
+            const playerCol = document.getElementById('playerCol');
+
+            // Musuh memilih menyerang (75% peluang) atau bertahan/ejek (25%)
+            if (Math.random() > 0.25) {
+                enemyCol.classList.add('enemy-slash');
+                
+                // Kerusakan musuh acak antara 12 - 22
+                const enemyDmg = 12 + Math.floor(Math.random() * 11);
+                
+                setTimeout(() => {
+                    playerHP = Math.max(0, playerHP - enemyDmg);
+                    updateHPBars();
+                    
+                    playerCol.classList.add('hurt-shake');
+                    addLog(`Ki Penjaga membalas! Tusukan Tombak Plasma mengenai Anda: [${enemyDmg} DMG]`);
+                    
+                    setTimeout(() => {
+                        enemyCol.classList.remove('enemy-slash');
+                        playerCol.classList.remove('hurt-shake');
+                        
+                        if (playerHP <= 0) {
+                            endGame(false);
+                        } else {
+                            isPlayerTurn = true;
+                            addLog("Giliran Anda! Pilih aksi taktis.");
+                        }
+                    }, 400);
+                }, 200);
+            } else {
+                addLog("Ki Penjaga melantunkan mantra pelindung kuno Jawa siber! 'Ora sembodo kowe!'");
+                isPlayerTurn = true;
+            }
+        }
+
+        // --- 3. SELESAI GAME & SIMPAN DATA KE LOCALSTORAGE ---
+        function endGame(isVictory) {
+            isBattleEnded = true;
+            battleScreen.style.display = 'none';
+            endScreen.style.display = 'flex';
+
+            const endTitle = document.getElementById('endTitle');
+            const endMessage = document.getElementById('endMessage');
+            const rewardBox = document.getElementById('rewardBox');
+
+            if (isVictory) {
+                endTitle.textContent = "KEMENANGAN MUTLAK!";
+                endTitle.className = "end-title win";
+                endMessage.innerHTML = "Ki Penjaga Candi bersujud sembari memegang lututnya yang berasap plasma. <br><br><i>'Ngaturaken sembah sungkem... Saktinya pusaka Keris milikmu, silakan ambil berkah emas luhur ini dan masuklah.'</i>";
+                
+                // Tambah +200 emas ke simpanan pemain
+                if (playerData) {
+                    playerData.gold += 200;
+                    
+                    // Tingkatkan level petualangan pemain sebagai apresiasi
+                    playerData.level += 1;
+                    
+                    localStorage.setItem('playerStats', JSON.stringify(playerData));
+                }
+                
+                rewardBox.style.display = 'flex';
+                showToast("Data perolehan emas disinkronkan ke local orbit!");
+            } else {
+                endTitle.textContent = "DIKALAHKAN!";
+                endTitle.className = "end-title lose";
+                endMessage.innerHTML = "Tubuh Stickman Anda mati sirkuit setelah terkena hantaman tombak plasma. Untungnya, sistem darurat Kapal Pinisi Anda berhasil meluncurkan teleportasi evakuasi untuk menarik tubuh Anda kembali ke orbit pesawat.";
+                rewardBox.style.display = 'none';
+                showToast("Sinyal kritis! Sistem mengevakuasi data petualang.");
+            }
+        }
+
+        // --- 4. TOAST SENSOR ---
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Inisialisasi saat memuat halaman
+        window.onload = loadPlayerStats;
+    </script>
+</body>
+</html>

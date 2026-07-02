@@ -225,7 +225,7 @@
             align-items: flex-end;
         }
 
-        /* Efek Hyperdrive Jump */
+        /* Efek Hyperdrive Jump (Layar Flash Neon) */
         .hyperdrive-overlay {
             position: absolute;
             top: 0;
@@ -241,6 +241,7 @@
 
         .hyperdrive-overlay.active {
             opacity: 1;
+            background: radial-gradient(circle, var(--neon-blue) 0%, var(--space-bg) 100%);
         }
 
         /* Kemudi Kemudi Pinisi Tradisional-Futuristik & Stickman Pilot */
@@ -470,6 +471,20 @@
             transform: rotate(45deg) scale(1.2) translateX(2px);
         }
 
+        /* Efek Kedipan Neon Kilat khusus Tombol Planet yang Dipilih */
+        .planet-node.flash-active {
+            animation: node-flash 0.5s ease-in-out infinite alternate;
+            border-color: var(--neon-blue) !important;
+            box-shadow: 0 0 20px var(--neon-blue) !important;
+            background: rgba(0, 240, 255, 0.15) !important;
+            pointer-events: none;
+        }
+
+        @keyframes node-flash {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.5) drop-shadow(0 0 8px var(--neon-blue)); }
+        }
+
         .planet-icon {
             width: 32px;
             height: 32px;
@@ -680,7 +695,7 @@
                 <p class="map-intro">Pilih koordinat planet Nusantara di bawah untuk melakukan lompatan kuantum bintang.</p>
                 
                 <!-- Node 1: Kepler-Jawa -->
-                <button class="planet-node" onclick="jumpToPlanet('planet-jawa/game.html', 'Kepler-Jawa')">
+                <button class="planet-node" onclick="pilihPlanet('planet-jawa/game.html', this, 'Kepler-Jawa')">
                     <div class="planet-icon" style="background: radial-gradient(circle at 30% 30%, #4fc3f7, #0277bd, #000);"></div>
                     <div class="planet-info">
                         <span class="planet-name">Kepler-Jawa</span>
@@ -689,7 +704,7 @@
                 </button>
 
                 <!-- Node 2: Ranah-Minang -->
-                <button class="planet-node" onclick="jumpToPlanet('planet-minang/game.html', 'Ranah-Minang')">
+                <button class="planet-node" onclick="pilihPlanet('planet-minang/game.html', this, 'Ranah-Minang')">
                     <div class="planet-icon" style="background: radial-gradient(circle at 30% 30%, #ff8a65, #d84315, #000); box-shadow: 0 0 8px rgba(255,138,101,0.4);"></div>
                     <div class="planet-info">
                         <span class="planet-name">Ranah-Minang</span>
@@ -698,7 +713,7 @@
                 </button>
 
                 <!-- Node 3: Borneo-Dayak -->
-                <button class="planet-node" onclick="jumpToPlanet('planet-dayak/game.html', 'Borneo-Dayak')">
+                <button class="planet-node" onclick="pilihPlanet('planet-dayak/game.html', this, 'Borneo-Dayak')">
                     <div class="planet-icon" style="background: radial-gradient(circle at 30% 30%, #aed581, #558b2f, #000); box-shadow: 0 0 8px rgba(174,213,129,0.4);"></div>
                     <div class="planet-info">
                         <span class="planet-name">Borneo-Dayak</span>
@@ -778,7 +793,6 @@
             document.getElementById('shieldCost').textContent = shieldCost;
 
             // Modul Senjata (Damage)
-            // Cari level senjata dengan kalkulasi atau asumsikan relasi linear
             const weaponLvl = Math.round((playerData.weaponDamage - 5) / 10);
             document.getElementById('weaponLevel').textContent = `Lvl ${weaponLvl}`;
             const weaponCost = Math.round(150 * Math.pow(1.6, weaponLvl - 1));
@@ -874,27 +888,38 @@
             updateHUD();
         }
 
-        // --- 5. NAVIGASI ANTARPLANET & EFEK HYPERDRIVE ---
-        function jumpToPlanet(targetUrl, planetName) {
+        // --- 5. LOGIKA TRANSISI MINI-GAME NAVIGASI ---
+        function pilihPlanet(planetUrl, element, planetName) {
             if (!playerData) return;
 
-            // Tampilkan notifikasi
-            showToast(`Mengunci koordinat ${planetName}. Menyiapkan Hyperdrive...`);
+            // 1. Simpan tujuan target ke localStorage
+            localStorage.setItem('targetPlanet', planetUrl);
 
-            // Aktifkan visual flash lompatan kuantum bintang
+            // 2. Berikan efek visual kedipan neon kilat pada tombol yang diklik
+            element.classList.add('flash-active');
+
+            // 3. Tampilkan notifikasi rute terkunci
+            showToast(`Rute ${planetName} terkunci! Membuka gerbang navigasi...`);
+
+            // 4. Aktifkan kilatan visual layar penuh (warp flash)
             const overlay = document.getElementById('hyperdriveOverlay');
-            
             setTimeout(() => {
                 overlay.classList.add('active');
             }, 300);
 
-            // Ganti posisi wilayah saat ini di database
-            playerData.currentSector = `Orbit ${planetName}`;
+            // 5. Ubah sektor wilayah pada database playerStats secara lokal
+            playerData.currentSector = `Transisi Orbit ${planetName}`;
             localStorage.setItem('playerStats', JSON.stringify(playerData));
 
+            // 6. Alihkan ke navigation.html setelah animasi kedipan selesai
             setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 1000);
+                window.location.href = 'navigation.html';
+            }, 900);
+        }
+
+        // Jalur navigasi planet langsung (tidak digunakan kembali, beralih ke pilihPlanet)
+        function jumpToPlanet(targetUrl, planetName) {
+            // Deprecated: Fungsi ini dialihkan secara aman ke pilihPlanet
         }
 
         // --- 6. TOAST NOTIFIKASI ---

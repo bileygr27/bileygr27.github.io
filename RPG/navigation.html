@@ -85,7 +85,8 @@
             if (player.x < 0) { player.x = 0; player.vx = 0; }
             if (player.x > canvas.width - player.w) { player.x = canvas.width - player.w; player.vx = 0; }
 
-            progress += 0.1;
+            // Penyesuaian durasi: 0.06 per frame agar mencapai sekitar 90 detik
+            progress += 0.06;
             document.getElementById('distDisplay').innerText = `Jarak: ${Math.min(100, Math.floor(progress))}%`;
 
             if (progress < 97) {

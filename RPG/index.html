@@ -425,6 +425,9 @@
 </head>
 <body>
 
+    <!-- Musik Latar Belakang -->
+    <audio id="bgMusic" src="musik.mp3" loop></audio>
+
     <!-- Latar Belakang Bintang Neon -->
     <div class="stars-container" id="starsContainer"></div>
 
@@ -504,7 +507,7 @@
                 <p>Namun, harapan belum sepenuhnya musnah. Golongan Cendikiawan dan intelektual yang tersisa bersatu untuk melarikan diri dari sistem tata surya menggunakan tiga bahtera raksasa. Perjalanan luar angkasa dimulai, dengan masing-masing bahtera menggenggam satu pecahan pusaka kuno berkekuatan magis siber: Amulet of Bhinneka Tunggal Ika.</p>
                 <p>Setelah pengembaraan berabad-century menembus kehampaan galaksi, mereka berhasil menemukan tiga planet layak huni: Kepler-Jawa, Ranah-Minang, dan Borneo-Dayak. Masing-masing bahtera mendarat, memulai kehidupan baru di tanah jajahan mereka sendiri.</p>
                 <p>Namun, bayang-bayang masa lalu melahirkan paranoid. Ketakutan ekstrem akan kontaminasi virus mutan dari Bumi membuat ketiga planet mengisolasi diri secara ketat, memutus jalur komunikasi, dan saling mencurigai satu sama lain...</p>
-                <p>Di tempat lain, sisa-sisa manusia dari Bumi yang tidak sempat menaiki ketiga bahtera berhasil mendirikan stasiun luar angkasa raksasa berjalan. Mengetahui adanya konflik dan isolasi di antara saudara-saudara mereka, stasiun ini meluncur demi satu tujuan mulia: menyatukan kembali ketiga pecahan Amulet of Bhinneka Tunggal Ika.</p>
+                <p>Di tempat lain, sisa-sisa manusia dari Bumi yang tidak sempat menaiki ketiga bahtera berhasil mendirikan stasiun luar aka berjalan. Mengetahui adanya konflik dan isolasi di antara saudara-saudara mereka, stasiun ini meluncur demi satu tujuan mulia: menyatukan kembali ketiga pecahan Amulet of Bhinneka Tunggal Ika.</p>
                 <p>Malang tak dapat ditolak, sesaat sebelum mendekati orbit tujuan, badai meteor besar menghantam stasiun antariksa tersebut hingga luluh lantak. Hanya dirimu yang berhasil selamat, setelah kedua orang tuamu memasukkanmu secara darurat ke dalam sekoci penyelamat kecil...</p>
                 <p>Kini, di balik kemudi kapal Gatotkaca Space Cruiser, takdir galaksi ada di pundakmu. Terbanglah, datangi ketiga planet legendaris itu, dan satukan kembali pecahan Amulet demi kedamaian semesta Nusantara!</p>
             </div>
@@ -597,7 +600,23 @@
             }
         }
 
-        // --- 3. KONTROLLER MENU UTAMA & PROLOG STAR WARS ---
+        // --- 3. KONTROLLER AUDIO MUSIK ---
+        const bgMusic = document.getElementById('bgMusic');
+
+        function playMusic() {
+            // Putar musik jika pengaturan Audio dalam status AKTIF (tidak bernilai false di localStorage)
+            if (localStorage.getItem('setting_audio') !== 'false') {
+                bgMusic.play().catch(err => {
+                    console.log("Autoplay dicegah oleh peramban. Musik akan diputar setelah ketukan pertama.");
+                });
+            }
+        }
+
+        function stopMusic() {
+            bgMusic.pause();
+        }
+
+        // --- 4. KONTROLLER MENU UTAMA & PROLOG STAR WARS ---
         const btnStart = document.getElementById('btnStart');
         const btnSettings = document.getElementById('btnSettings');
         const settingsModal = document.getElementById('settingsModal');
@@ -613,14 +632,18 @@
 
         // Fungsi Transmisi Halaman
         const navigateToCockpit = () => {
+            stopMusic(); // Matikan musik menu saat berganti halaman/pindah ke pesawat
             window.location.href = 'pesawat.html';
         };
 
-        // Mulai Petualangan -> Picu Prolog Terlebih Dahulu
+        // Mulai Petualangan -> Picu Prolog Terlebih Dahulu & Mainkan Musik
         const handleStartGame = (e) => {
             e.preventDefault();
             initializePlayerData();
             
+            // Putar musik pengiring cerita
+            playMusic();
+
             // Sembunyikan menu utama dengan transisi halus
             mainMenu.style.opacity = '0';
             mainMenu.style.transform = 'scale(0.9)';
@@ -674,6 +697,14 @@
             const isActive = toggleAudio.classList.toggle('active');
             toggleAudio.textContent = isActive ? 'AKTIF' : 'NON-AKTIF';
             localStorage.setItem('setting_audio', isActive ? 'true' : 'false');
+            if (isActive) {
+                // Jika sedang di layar prolog, putar musiknya
+                if (storyOverlay.style.display === 'flex') {
+                    playMusic();
+                }
+            } else {
+                stopMusic();
+            }
         });
 
         // Toggle Bintang
@@ -691,7 +722,7 @@
             }
         });
 
-        // --- 4. TOAST SENSOR ---
+        // --- 5. TOAST SENSOR ---
         function showToast(message) {
             const toast = document.getElementById('toastNotification');
             toast.textContent = message;

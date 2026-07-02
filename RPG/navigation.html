@@ -141,14 +141,24 @@
             for(let i=0; i<30; i++) ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1.2, 1.2);
 
             ctx.globalAlpha = player.alpha;
-            ctx.fillStyle = '#8b5a2b';
+            
+            // Menggambar Pesawat Luar Angkasa Baru
+            ctx.fillStyle = '#cccccc'; // Bodi utama
             ctx.beginPath();
-            ctx.moveTo(player.x, player.y + 40);
-            ctx.lineTo(player.x + 22, player.y);
-            ctx.lineTo(player.x + 45, player.y + 40);
+            ctx.moveTo(player.x + 22, player.y);      // Ujung depan
+            ctx.lineTo(player.x + 45, player.y + 40);  // Sayap kanan
+            ctx.lineTo(player.x + 22, player.y + 30);  // Bagian tengah belakang
+            ctx.lineTo(player.x, player.y + 40);      // Sayap kiri
+            ctx.closePath();
             ctx.fill();
-            ctx.fillStyle = '#00f0ff';
-            ctx.fillRect(player.x + 10, player.y + 25, 25, 4);
+
+            ctx.fillStyle = '#00f0ff'; // Kokpit
+            ctx.beginPath();
+            ctx.ellipse(player.x + 22, player.y + 15, 6, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#ff4500'; // Mesin (api kecil)
+            ctx.fillRect(player.x + 18, player.y + 35, 8, 8);
 
             ctx.globalAlpha = 1;
             ctx.fillStyle = '#ff4500';

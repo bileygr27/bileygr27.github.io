@@ -27,13 +27,24 @@
         <div class="btn-ctrl" id="btnRight">▶</div>
     </div>
 
+    <!-- Elemen Audio -->
+    <audio id="bgMusic" loop src="musik2.mp3"></audio>
+
     <canvas id="gameCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const bgMusic = document.getElementById('bgMusic');
         const targetPlanet = localStorage.getItem('targetPlanet') || 'planet-jawa/game.html';
         
+        // Memulai musik setelah interaksi pertama
+        function startMusic() {
+            bgMusic.play().catch(e => console.log("Menunggu interaksi pengguna"));
+            window.removeEventListener('pointerdown', startMusic);
+        }
+        window.addEventListener('pointerdown', startMusic);
+
         // Konfigurasi Game
         let player = { x: 0, y: 0, w: 45, h: 55, hp: 100, alpha: 1, vx: 0 };
         let meteors = [];
@@ -56,20 +67,19 @@
 
         const btnL = document.getElementById('btnLeft');
         const btnR = document.getElementById('btnRight');
-        btnL.onpointerdown = () => keys.ArrowLeft = true;
+        btnL.onpointerdown = () => { keys.ArrowLeft = true; startMusic(); };
         btnL.onpointerup = () => keys.ArrowLeft = false;
-        btnR.onpointerdown = () => keys.ArrowRight = true;
+        btnR.onpointerdown = () => { keys.ArrowRight = true; startMusic(); };
         btnR.onpointerup = () => keys.ArrowRight = false;
 
         function update() {
             if (!gameActive) return;
 
-            // Kontrol lebih berat (dikurangi jarak geser dengan membatasi velocity)
             if (keys.ArrowLeft) player.vx -= 0.8;
             else if (keys.ArrowRight) player.vx += 0.8;
             else player.vx *= 0.75; 
 
-            player.vx = Math.max(-6, Math.min(6, player.vx)); // Batas kecepatan lebih rendah
+            player.vx = Math.max(-6, Math.min(6, player.vx));
             player.x += player.vx;
 
             if (player.x < 0) { player.x = 0; player.vx = 0; }
@@ -91,7 +101,7 @@
                 let dx = (player.x + player.w/2) - m.x;
                 let dy = (player.y + player.h/2) - m.y;
                 if (Math.sqrt(dx*dx + dy*dy) < m.r + 15) {
-                    player.hp -= 12; // Damage ditingkatkan menjadi 12
+                    player.hp -= 12;
                     meteors.splice(index, 1);
                     document.getElementById('hpDisplay').innerText = `HP: ${player.hp}%`;
                     if (player.hp <= 0) { alert("Pesawat hancur!"); window.location.href = 'pesawat.html'; }

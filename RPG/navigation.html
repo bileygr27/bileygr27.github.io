@@ -45,17 +45,18 @@
         const bgMusic = document.getElementById('bgMusic');
         const targetPlanet = localStorage.getItem('targetPlanet') || 'planet-jawa/game.html';
         
+        let player = { x: 0, y: 0, w: 45, h: 55, hp: 100, alpha: 1, vx: 0 };
+        let meteors = [];
+        let particles = []; // Array untuk jejak partikel
+        let progress = 0;
+        let gameActive = true;
+        let planetObj = { x: 0, y: -300, r: 80, visible: false };
+
         function startMusic() {
             bgMusic.play().catch(e => console.log("Menunggu interaksi pengguna"));
             window.removeEventListener('pointerdown', startMusic);
         }
         window.addEventListener('pointerdown', startMusic);
-
-        let player = { x: 0, y: 0, w: 45, h: 55, hp: 100, alpha: 1, vx: 0 };
-        let meteors = [];
-        let progress = 0;
-        let gameActive = true;
-        let planetObj = { x: 0, y: -300, r: 80, visible: false };
 
         function showGameOver() {
             gameActive = false;
@@ -93,6 +94,14 @@
             player.vx = Math.max(-6, Math.min(6, player.vx));
             player.x += player.vx;
 
+            // Tambahkan partikel jejak setiap frame di belakang pesawat
+            particles.push({ 
+                x: player.x + 22, 
+                y: player.y + 40, 
+                life: 1.0, 
+                vx: (Math.random() - 0.5) * 2 
+            });
+
             if (player.x < 0) { player.x = 0; player.vx = 0; }
             if (player.x > canvas.width - player.w) { player.x = canvas.width - player.w; player.vx = 0; }
 
@@ -115,12 +124,16 @@
                     player.hp -= 12;
                     meteors.splice(index, 1);
                     document.getElementById('hpDisplay').innerText = `HP: ${player.hp}%`;
-                    if (player.hp <= 0) {
-                        player.hp = 0;
-                        document.getElementById('hpDisplay').innerText = "HP: 0%";
-                        showGameOver();
-                    }
+                    if (player.hp <= 0) showGameOver();
                 }
+            });
+
+            // Update partikel
+            particles.forEach((p, i) => {
+                p.y += 2;
+                p.x += p.vx;
+                p.life -= 0.05;
+                if (p.life <= 0) particles.splice(i, 1);
             });
 
             if (progress >= 97) {
@@ -140,25 +153,29 @@
             ctx.fillStyle = 'white';
             for(let i=0; i<30; i++) ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1.2, 1.2);
 
+            // Gambar Jejak Partikel
+            particles.forEach(p => {
+                ctx.fillStyle = `rgba(255, 100, 0, ${p.life})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
+                ctx.fill();
+            });
+
             ctx.globalAlpha = player.alpha;
             
-            // Menggambar Pesawat Luar Angkasa Baru
-            ctx.fillStyle = '#cccccc'; // Bodi utama
+            ctx.fillStyle = '#cccccc'; 
             ctx.beginPath();
-            ctx.moveTo(player.x + 22, player.y);      // Ujung depan
-            ctx.lineTo(player.x + 45, player.y + 40);  // Sayap kanan
-            ctx.lineTo(player.x + 22, player.y + 30);  // Bagian tengah belakang
-            ctx.lineTo(player.x, player.y + 40);      // Sayap kiri
+            ctx.moveTo(player.x + 22, player.y);
+            ctx.lineTo(player.x + 45, player.y + 40);
+            ctx.lineTo(player.x + 22, player.y + 30);
+            ctx.lineTo(player.x, player.y + 40);
             ctx.closePath();
             ctx.fill();
 
-            ctx.fillStyle = '#00f0ff'; // Kokpit
+            ctx.fillStyle = '#00f0ff';
             ctx.beginPath();
             ctx.ellipse(player.x + 22, player.y + 15, 6, 10, 0, 0, Math.PI * 2);
             ctx.fill();
-
-            ctx.fillStyle = '#ff4500'; // Mesin (api kecil)
-            ctx.fillRect(player.x + 18, player.y + 35, 8, 8);
 
             ctx.globalAlpha = 1;
             ctx.fillStyle = '#ff4500';

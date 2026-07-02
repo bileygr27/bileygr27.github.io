@@ -12,6 +12,7 @@
             --neon-blue: #00f0ff;
             --neon-magenta: #ff007f;
             --neon-gold: #ffaa00;
+            --neon-green: #39ff14;
             --wood-brown: #8b5a2b;
             --wood-light: #cd853f;
             --text-light: #f0f4f8;
@@ -250,11 +251,11 @@
             pointer-events: none;
         }
 
-        /* PANEL KIRI: UPGRADE KAPAL */
+        /* PANEL KIRI: UPGRADE KAPAL & STATUS AMULET */
         .upgrade-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             flex: 1;
             justify-content: flex-start;
         }
@@ -263,10 +264,10 @@
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(0, 240, 255, 0.1);
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             transition: all 0.2s ease;
         }
 
@@ -282,14 +283,14 @@
         }
 
         .upgrade-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-light);
         }
 
         .upgrade-level {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--neon-gold);
             background: rgba(255, 170, 0, 0.1);
             padding: 2px 6px;
@@ -297,7 +298,7 @@
         }
 
         .upgrade-desc {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: rgba(240, 244, 248, 0.6);
             line-height: 1.3;
         }
@@ -306,12 +307,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
         .upgrade-cost {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--neon-gold);
             display: flex;
             align-items: center;
@@ -322,10 +323,10 @@
             background: var(--neon-blue);
             color: var(--space-bg);
             border: none;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 6px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
@@ -336,8 +337,81 @@
             transform: translateY(-1px);
         }
 
-        .btn-upgrade:active {
-            transform: translateY(0);
+        /* PANEL STATUS AMULET BHINNEKA TUNGGAL IKA */
+        .amulet-container {
+            margin-top: 15px;
+            background: rgba(255, 170, 0, 0.03);
+            border: 1px dashed rgba(255, 170, 0, 0.25);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .amulet-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--neon-gold);
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(255, 170, 0, 0.2);
+        }
+
+        .amulet-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .amulet-slot {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .amulet-slot.active {
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 10px rgba(255, 170, 0, 0.15);
+            background: rgba(255, 170, 0, 0.08);
+        }
+
+        .amulet-icon-shard {
+            font-size: 1.1rem;
+            opacity: 0.25;
+            transition: all 0.3s;
+        }
+
+        .amulet-slot.active .amulet-icon-shard {
+            opacity: 1;
+            filter: drop-shadow(0 0 5px var(--neon-gold));
+            animation: bounce-shard 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce-shard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .amulet-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            color: rgba(240, 244, 248, 0.4);
+            text-align: center;
+        }
+
+        .amulet-slot.active .amulet-label {
+            color: var(--neon-gold);
+            font-weight: bold;
         }
 
         /* PANEL KANAN: PETA NAVIGASI PLANET */
@@ -423,30 +497,6 @@
             margin-top: 2px;
         }
 
-        /* Notifikasi Toast */
-        .toast {
-            position: fixed;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 240, 255, 0.95);
-            color: var(--space-bg);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            font-family: 'Share Tech Mono', monospace;
-            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
-            z-index: 1000;
-            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
-            pointer-events: none;
-            text-align: center;
-        }
-
-        .toast.show {
-            bottom: 30px;
-        }
-
         /* RESPONSIVITAS MOBILE & TABLET */
         @media (max-width: 968px) {
             body {
@@ -502,7 +552,7 @@
     <!-- Area Kokpit Utama -->
     <main class="cockpit-grid">
         
-        <!-- PANEL KIRI: UPGRADE KAPAL -->
+        <!-- PANEL KIRI: UPGRADE KAPAL & DETEKTOR AMULET -->
         <section class="holo-panel">
             <h2 class="panel-title">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -532,6 +582,28 @@
                     <div class="upgrade-action">
                         <span class="upgrade-cost">🪙 <span id="weaponCost">150</span></span>
                         <button class="btn-upgrade" onclick="buyUpgrade('weapon')">UPGRADE</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STATUS AMULET OF BHINNEKA TUNGGAL IKA -->
+            <div class="amulet-container">
+                <div class="amulet-header">AMULET TRANSMITTER</div>
+                <div class="amulet-slots">
+                    <!-- Slot 1: Jawa -->
+                    <div class="amulet-slot" id="slotJawa">
+                        <span class="amulet-icon-shard">🔺</span>
+                        <span class="amulet-label">KEPLER-JAWA</span>
+                    </div>
+                    <!-- Slot 2: Minang -->
+                    <div class="amulet-slot" id="slotMinang">
+                        <span class="amulet-icon-shard">🟩</span>
+                        <span class="amulet-label">RANAH-MINANG</span>
+                    </div>
+                    <!-- Slot 3: Dayak -->
+                    <div class="amulet-slot" id="slotDayak">
+                        <span class="amulet-icon-shard">🌀</span>
+                        <span class="amulet-label">BORNEO-DAYAK</span>
                     </div>
                 </div>
             </div>
@@ -575,7 +647,7 @@
 
                     <!-- Konsol Hologram Melayang di Sisi Depan Kemudi -->
                     <path d="M60 135 L80 130 L120 130 L140 135" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5" opacity="0.7" />
-                    <text x="100" y="142" fill="var(--neon-magenta)" font-family="'Share Tech Mono'" font-size="5" text-anchor="middle" letter-spacing="1">AUTO_PILOT: AKTIF</text>
+                    <text x="100" y="142" id="consoleHoloText" fill="var(--neon-magenta)" font-family="'Share Tech Mono'" font-size="5" text-anchor="middle" letter-spacing="1">AUTO_PILOT: AKTIF</text>
                 </svg>
             </div>
 
@@ -682,6 +754,7 @@
 
             playerData = JSON.parse(rawData);
             updateHUD();
+            checkAmulets();
         }
 
         function updateHUD() {
@@ -712,7 +785,55 @@
             document.getElementById('weaponCost').textContent = weaponCost;
         }
 
-        // --- 3. LOGIKA UPGRADE MODUL ---
+        // --- 3. LOGIKA DETEKSI KEPINGAN AMULET ---
+        function checkAmulets() {
+            // Membaca status kepingan dari localStorage (diset oleh game planet masing-masing)
+            const cakraJawa = localStorage.getItem('kepingCakraJawa') === 'true';
+            const cakraMinang = localStorage.getItem('kepingCakraMinang') === 'true';
+            const cakraDayak = localStorage.getItem('kepingCakraDayak') === 'true';
+
+            // Elemen Slot UI
+            const slotJawa = document.getElementById('slotJawa');
+            const slotMinang = document.getElementById('slotMinang');
+            const slotDayak = document.getElementById('slotDayak');
+            const consoleHoloText = document.getElementById('consoleHoloText');
+
+            let activeCount = 0;
+
+            if (cakraJawa) {
+                slotJawa.classList.add('active');
+                activeCount++;
+            }
+            if (cakraMinang) {
+                slotMinang.classList.add('active');
+                activeCount++;
+            }
+            if (cakraDayak) {
+                slotDayak.classList.add('active');
+                activeCount++;
+            }
+
+            // Integrasi Cerita: Jika semua amulet terkumpul!
+            if (activeCount === 3) {
+                consoleHoloText.textContent = "AMULET BHINNEKA: BERSATU!";
+                consoleHoloText.setAttribute("fill", "var(--neon-gold)");
+                // Tambahkan efek bayangan menyala emas yang dramatis
+                consoleHoloText.style.filter = "drop-shadow(0 0 4px var(--neon-gold))";
+                
+                // Triger pesan kemenangan global jika baru pertama kali terkumpul
+                if (localStorage.getItem('bhinnekaUnitedTriggered') !== 'true') {
+                    localStorage.setItem('bhinnekaUnitedTriggered', 'true');
+                    setTimeout(() => {
+                        alert("SINKRONISASI BERHASIL!\n\nKetiga kepingan Amulet of Bhinneka Tunggal Ika telah beresonansi! Energi murni siber memancar kuat dari pusat navigasi Kapal Pinisi Anda. Suku Nusantara kini telah bersatu kembali!");
+                    }, 1000);
+                }
+            } else if (activeCount > 0) {
+                consoleHoloText.textContent = `AMULET: ${activeCount}/3 SHARDS`;
+                consoleHoloText.setAttribute("fill", "var(--neon-blue)");
+            }
+        }
+
+        // --- 4. LOGIKA UPGRADE MODUL ---
         function buyUpgrade(type) {
             if (!playerData) return;
 
@@ -753,7 +874,7 @@
             updateHUD();
         }
 
-        // --- 4. NAVIGASI ANTARPLANET & EFEK HYPERDRIVE ---
+        // --- 5. NAVIGASI ANTARPLANET & EFEK HYPERDRIVE ---
         function jumpToPlanet(targetUrl, planetName) {
             if (!playerData) return;
 
@@ -776,7 +897,7 @@
             }, 1000);
         }
 
-        // --- 5. TOAST NOTIFIKASI ---
+        // --- 6. TOAST NOTIFIKASI ---
         function showToast(message) {
             const toast = document.getElementById('toastNotification');
             toast.textContent = message;
